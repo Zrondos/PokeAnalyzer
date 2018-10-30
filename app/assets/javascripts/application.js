@@ -15,7 +15,7 @@
 //= require turbolinks
 //= require_tree .
 class Pokemon{
-    constructor(data){
+    constructor(data,position){
         this.name=data.name
         this.hp=data.stats[5].base_stat
         this.attack=data.stats[4].base_stat
@@ -23,6 +23,7 @@ class Pokemon{
         this.special_attack=data.stats[2].base_stat
         this.special_defense=data.stats[1].base_stat
         this.speed=data.stats[0].base_stat
+        this.position=position
         var abilities_length=data.abilities.length
         var abilities_array=[]
         for (var i = 0; i < abilities_length; i++) { 
@@ -35,129 +36,179 @@ class Pokemon{
             type_array.push(data.types[i].type.name)
         }
         this.type=[type_array]
+        this.type_factors=type_weakness(type_array)
         
         }
 }
 
-function type_weakness(type_array){
-    //type_effectiveness_array=[[weakness],[resistance],[immunity]]
-    var normal_type_effectiveness={
+var type_effectiveness_hash={
+    normal: {
         type: "normal",
         weakness: ["fighting"],
         resistance: [],
         immunity: ["ghost"]
-    }
-    var fire_type_effectiveness={
+    },
+    fire:{
         type: "fire",
         weakness: ["water", "ground", "rock"],
-        resistance=["fire", "grass", "ice", "bug", "steel", "fairy"],
+        resistance: ["fire", "grass", "ice", "bug", "steel", "fairy"],
         immunity: []
-    }
-    var water_type_effectiveness={
+    },
+    water:{
         type: "water",
-        weakness=["grass", "electric"],
-        resistance=["fire", "water", "ice", "steel"],
-        immunity=[]
-    }
-    var grass_type_effectiveness={
+        weakness: ["grass", "electric"],
+        resistance: ["fire", "water", "ice", "steel"],
+        immunity: []
+    },
+    grass:{
         type: "grass",
-        weakness=["fire", "ice", "poison", "flying", "bug"],
-        resistance=["water", "grass", "electric", "ground"],
-        immunity=[]
-    }
-    var electric_type_effectiveness={
+        weakness: ["fire", "ice", "poison", "flying", "bug"],
+        resistance: ["water", "grass", "electric", "ground"],
+        immunity: []
+    },
+    electric:{
         type: "electric",
-        weakness=["ground"],
-        resistance=["electric","flying"],
-        immunity=[]
-    }
-    var ice_type_effectiveness={
+        weakness: ["ground"],
+        resistance: ["electric","flying", "steel"],
+        immunity: []
+    },
+    ice:{
         type: "ice",
-        weakness=["fire", "fighting", "rock", "steel"],
-        resistance=["ice"],
-        immunity=[]
-    }
-    var fighting_type_effectiveness={
+        weakness: ["fire", "fighting", "rock", "steel"],
+        resistance: ["ice"],
+        immunity: []
+    },
+    fighting:{
         type: "fighting",
-        weakness=["flying","psychic","fairy"],
-        resistance=["bug","rock","dark"],
-        immunity=[]
-    }
-    var poison_type_effectiveness={
+        weakness: ["flying","psychic","fairy"],
+        resistance: ["bug","rock","dark"],
+        immunity: []
+    },
+    poison:{
         type: "poison",
-        weakness=["ground","psychic"],
-        resistance=["grass","fighting","poison","bug","fairy"],
-        immunity=[]
-    }
-    var ground_type_effectiveness={
+        weakness: ["ground","psychic"],
+        resistance: ["grass","fighting","poison","bug","fairy"],
+        immunity: []
+    },
+    ground:{
         type: "ground",
-        weakness=["water","grass","ice"],
-        resistance=["poison","rock"],
-        immunity=["electric"]
-    }
-    var flying_type_effectiveness={
+        weakness: ["water","grass","ice"],
+        resistance: ["poison","rock"],
+        immunity: ["electric"]
+    },
+    flying:{
         type: "flying",
-        weakness=["electric","ice","rock"],
-        resistance=["grass","fighting","bug"],
-        immunity=["ground"]
-    }
-    var psychic_type_effectiveness={
+        weakness: ["electric","ice","rock"],
+        resistance: ["grass","fighting","bug"],
+        immunity: ["ground"]
+    },
+    psychic:{
         type: "psychic",
-        weakness=["bug","ghost","dark"],
-        resistance=["fighting","psychic"],
-        immunity=[]
-    }
-    var bug_type_effectiveness={
+        weakness: ["bug","ghost","dark"],
+        resistance: ["fighting","psychic"],
+        immunity: []
+    },
+    bug:{
         type: "bug",
-        weakness=["fire","flying","rock"],
-        resistance=["grass","fighting","ground"],
-        immunity=[]
-    }
-    var rock_type_effectiveness={
+        weakness: ["fire","flying","rock"],
+        resistance: ["grass","fighting","ground"],
+        immunity: []
+    },
+    rock:{
         type: "rock",
-        weakness=["water","grass","fighting","ground","steel"],
-        resistance=["normal","fire","poison","flying"],
-        immunity=[]
-    }
-    var ghost_type_effectiveness={
+        weakness: ["water","grass","fighting","ground","steel"],
+        resistance: ["normal","fire","poison","flying"],
+        immunity: []
+    },
+    ghost:{
         type: "ghost",
-        weakness=["ghost","dark"],
-        resistance=["poison","bug"],
-        immunity=["normal","fighting"]
-    }
-    var dragon_type_effectiveness={
+        weakness: ["ghost","dark"],
+        resistance: ["poison","bug"],
+        immunity: ["normal","fighting"]
+    },
+    dragon:{
         type: "dragon",
-        weakness=["ice","dragon","fairy"],
-        resistance=["fire","water","grass","electric"],
-        immunity=[]
-    }
-    var dark_type_effectiveness={
+        weakness: ["ice","dragon","fairy"],
+        resistance: ["fire","water","grass","electric"],
+        immunity: []
+    },
+    dark:{
         type: "dark",
-        weakness=["fighting","bug","fairy"],
-        resistance=["ghost","dark"],
-        immunity=["psychic"]
-    }
-    var steel_type_effectiveness={
+        weakness: ["fighting","bug","fairy"],
+        resistance: ["ghost","dark"],
+        immunity: ["psychic"]
+    },
+    steel:{
         type: "steel",
-        weakness=["fire","fighting","ground"],
-        resistance=["normal","grass","ice","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy"],
-        immunity=["poison"]
-    }
-    var fairy_type_effectiveness={
+        weakness: ["fire","fighting","ground"],
+        resistance: ["normal","grass","ice","flying","psychic","bug","rock","dragon","steel","fairy"],
+        immunity: ["poison"]
+    },
+    fairy:{
         type: "fairy",
-        weakness=["poison","steel"],
-        resistance=["fighting","bug","dark"],
-        immunity=["dragon"]
+        weakness: ["poison","steel"],
+        resistance: ["fighting","bug","dark"],
+        immunity: ["dragon"]
     }
-    var array_of_type_effectiveness=[normal_type_effectiveness, fire_type_effectiveness, water_type_effectiveness, grass_type_effectiveness, electric_type_effectiveness, ice_type_effectiveness, fighting_type_effectiveness, poison_type_effectiveness, ground_type_effectiveness, flying_type_effectiveness, psychic_type_effectiveness, bug_type_effectiveness, rock_type_effectiveness, ghost_type_effectiveness, dragon_type_effectiveness, dark_type_effectiveness, steel_type_effectiveness, fairy_type_effectiveness]
+}
 
+
+
+
+
+/////////////////////////////////////
+function type_weakness(type_array){
+    //type_effectiveness_array=[[weakness],[resistance],[immunity]]
+    type_factors={
+        normal: 1,
+        fire: 1,
+        water: 1,
+        grass: 1,
+        electric: 1,
+        ice: 1,
+        fighting: 1,
+        poison: 1,
+        ground: 1,
+        flying: 1,
+        psychic: 1,
+        bug: 1,
+        rock: 1,
+        ghost: 1,
+        dragon: 1,
+        dark: 1,
+        steel: 1,
+        fairy:1
+    }
+    
     for (var i=0; i<type_array.length; i++){
-        for (var j=0; j<array_of_type_effectiveness.length; i++){
-            if array_of_type_effeciveness[j].weakness.includes(type_array[i])
+        current_type=type_array[i]
+        for (var j=0; j<type_effectiveness_hash[current_type].weakness.length; j++){
+            type_factors[type_effectiveness_hash[current_type].weakness[j]]*=2
+        }
+        for (var j=0; j<type_effectiveness_hash[current_type].resistance.length; j++){
+            type_factors[type_effectiveness_hash[current_type].resistance[j]]*=.5
+        }
+        for (var j=0; j<type_effectiveness_hash[current_type].immunity.length; j++){
+            type_factors[type_effectiveness_hash[current_type].immunity[j]]*=0
         }
 
     }
+
+    var display_type_factors=document.createElement("div")
+    display_type_factors.setAttribute("class",`type_factors`)
+    Object.keys(type_factors).forEach(function (key) { 
+        var list_item=document.createElement("p")
+        list_item.innerHTML=`${key}: ${type_factors[key]}`
+        display_type_factors.appendChild(list_item)
+        console.log("somethig")
+    })
+    document.getElementById("team_analysis").appendChild(display_type_factors)
+    display_type_factors=""
+    
+    
 }
+    
+
 
 
 function randomize(){
@@ -182,7 +233,7 @@ function randomize(){
     axios.all([pokemonCall1, pokemonCall2, pokemonCall3, pokemonCall4, pokemonCall5, pokemonCall6])
 .then(function (responses) {
     for (i=1; i<=6; i++){
-        pokemon= new Pokemon(responses[i-1].data)
+        pokemon= new Pokemon(responses[i-1].data,i)
 
         var gif = document.createElement("img");
         gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);
@@ -230,7 +281,6 @@ function get_pokemon(number){
     axios.get(`https://fizal.me/pokeapi/api/${number}.json`).then(
         function (response)
             {   pokemon= new Pokemon(response.data)
-                console.log(response.data)
 
                 var gif = document.createElement("img");
                 gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);

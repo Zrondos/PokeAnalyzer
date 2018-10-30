@@ -33,6 +33,14 @@
     
  }
 
+ #team_analysis{
+     display: flex;
+ }
+
+ .type_factors{
+     padding-left: 125px;
+ }
+
  
 
 
