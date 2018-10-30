@@ -1,0 +1,62 @@
+<h2>My Pokemon Team</h2>
+<button onclick="randomize()">Random Team</button>
+
+<%= text_field_tag(:search) %>
+<button onclick="get_pokemon(document.getElementById('search').value)">Add</button>
+
+
+<%= form_for :team, url: "teams/create", remote: true do |form| %>
+  <%= text_field :team, :pokemon_1 %>
+  <%= text_field :team, :pokemon_2 %>
+  <%= text_field :team, :pokemon_3 %>
+  <%= text_field :team, :pokemon_4 %>
+  <%= text_field :team, :pokemon_5 %>
+  <%= text_field :team, :pokemon_6 %>
+  <%= form.submit  %>
+<% end  %>
+<button onclick="analyze( 
+          document.getElementById('team_pokemon_1').value, 
+          document.getElementById('team_pokemon_2').value,
+          document.getElementById('team_pokemon_3').value,
+          document.getElementById('team_pokemon_4').value,
+          document.getElementById('team_pokemon_5').value,
+          document.getElementById('team_pokemon_6').value
+          )">
+Analyze</button>
+
+<div class="team_container">
+  <div class="pokemon_container" id="pokemon_1">
+    <!--<img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/charizard.gif">
+    <%= image_tag 'delete.png', class: 'delete_button'%> -->
+    
+  </div>
+  <div class="pokemon_container" id="pokemon_2">
+    <!-- <img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/abomasnow.gif">-->
+    <div id="pokemon_2_stats">
+    </div>
+  </div>
+  <div class="pokemon_container" id="pokemon_3">
+    <!-- <img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/wailord.gif">-->
+    <div id="pokemon_3_stats">
+    </div>
+  </div>
+  <div class="pokemon_container" id="pokemon_4">
+    <!--<img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/rayquaza.gif">-->
+    <div id="pokemon_4_stats">
+    </div>
+  </div>
+  <div class="pokemon_container" id="pokemon_5">
+    <!--<img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/bulbasaur.gif">-->
+    <div id="pokemon_5_stats">
+    </div>
+  </div>
+  <div class="pokemon_container" id="pokemon_6">
+    <div id="pokemon_6_stats">
+    </div>
+    
+  </div>
+</div>
+
+<div id="team_analysis">
+  
+</div>
