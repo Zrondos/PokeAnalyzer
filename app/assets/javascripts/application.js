@@ -37,8 +37,9 @@ class Pokemon{
         }
         this.type=[type_array]
         this.type_factors=type_weakness(type_array)
-        
         }
+
+        
 }
 
 var type_effectiveness_hash={
@@ -152,10 +153,6 @@ var type_effectiveness_hash={
     }
 }
 
-
-
-
-
 /////////////////////////////////////
 function type_weakness(type_array){
     //type_effectiveness_array=[[weakness],[resistance],[immunity]]
@@ -200,14 +197,14 @@ function type_weakness(type_array){
         var list_item=document.createElement("p")
         list_item.innerHTML=`${key}: ${type_factors[key]}`
         display_type_factors.appendChild(list_item)
-        console.log("somethig")
     })
     document.getElementById("team_analysis").appendChild(display_type_factors)
     display_type_factors=""
     
     
 }
-    
+
+
 
 
 
@@ -234,7 +231,6 @@ function randomize(){
 .then(function (responses) {
     for (i=1; i<=6; i++){
         pokemon= new Pokemon(responses[i-1].data,i)
-
         var gif = document.createElement("img");
         gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);
         gif.setAttribute("class","pokemon_gif");
@@ -353,5 +349,12 @@ function analyze(pokemon_1,pokemon_2,pokemon_3,pokemon_4,pokemon_5,pokemon_6){
 
 }
 
+function func(){
+    axios.get('https://www.smogon.com/stats/2014-11/chaos/uu-1760.json').then(
+        function (response){
+            console.log(response)
+        }
+    )
 
+}
 
