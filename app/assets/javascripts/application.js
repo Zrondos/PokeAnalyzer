@@ -40,7 +40,6 @@ class Pokemon{
         }
         this.type=type_array
         this.type_factors=type_weakness(type_array)
-        
         }
 }
 
@@ -198,25 +197,25 @@ function randomize(){
     for (var i=0; i<6; i++){
         
         number=Math.floor((Math.random() * 721) + 1);
-        passed=get_pokemon(number)
-        console.log(passed)
-        if (!passed){
-            i-=1;
-            continue
-        }
+        get_pokemon(number)
+        // console.log(passed.resolve)
+        // console.log(passed)
+        // if (!passed){
+        //     i-=1;
+        //     continue
+        // }
     }
     position=1
 }
 
 position=1
 function get_pokemon(number){
-    return (
+    
+
     axios.get(`https://fizal.me/pokeapi/api/${number}.json`).then(
         function (responses) {
                 pokemon= new Pokemon(responses.data,position)
-                // if (pokemon["attack"]<50){
-                //     return false
-                // }
+
                 pokemon_team_hash[position]=pokemon
 
                 var gif = document.createElement("img");
@@ -248,14 +247,66 @@ function get_pokemon(number){
                 pokemon_stats.appendChild(special_defense)
                 pokemon_stats.appendChild(speed)
 
-                display_type_factors=document.createElement("div")
-                display_type_factors.setAttribute("class",`type_factors`)
+                // display_type_factors=document.createElement("div")
+                // display_type_factors.setAttribute("id",'type_factors')
+
                 var type_factors=type_weakness(pokemon.type)
+
+                times_4=document.createElement("div")
+                title=document.createElement("p")
+                title.innerHTML="4x Damange"
+                times_4.appendChild(title)
+
+                times_2=document.createElement("div")
+                title=document.createElement("p")
+                title.innerHTML="2x Damange"
+                times_2.appendChild(title)
+
+                times_1=document.createElement("div")
+                title=document.createElement("p")
+                title.innerHTML="1x Damange"
+                times_1.appendChild(title)
+
+                times_half=document.createElement("div")
+                title=document.createElement("p")
+                title.innerHTML="0.5x Damange"
+                times_half.appendChild(title)
+                
+
+                times_quarter=document.createElement("div")
+                title=document.createElement("p")
+                title.innerHTML="0.25x Damange"
+                times_quarter.appendChild(title)
+
+
                 Object.keys(type_factors).forEach(function (key) { 
-                    var list_item=document.createElement("p")
-                    list_item.innerHTML=`${key}: ${type_factors[key]}`
-                    display_type_factors.appendChild(list_item)
+                    var list_item=document.createElement("span")
+                    if (type_factors[key]==4){
+                        times_4.appendChild(list_item)
+                    }
+                    else if (type_factors[key]==2){
+                        times_2.appendChild(list_item)
+                        list_item.innerHTML=`${key}`
+                    }
+                    else if (type_factors[key]==1){
+                        times_1.appendChild(list_item)
+                        list_item.innerHTML=key
+                    }
+                    else if (type_factors[key]==.5){
+                        times_half.appendChild(list_item)
+                        list_item.innerHTML=key
+                    }
+                    else if (type_factors[key]==.25){
+                        times_quarter.appendChild(list_item)
+                        list_item.innerHTML=key
+                    }                    
                 })
+                
+                // display_type_factors.appendChild(times_4)
+                // display_type_factors.appendChild(times_2)
+                // display_type_factors.appendChild(times_1)
+                // display_type_factors.appendChild(times_half)
+                // display_type_factors.appendChild(times_quarter)
                 
                 document.getElementById(`pokemon_${position}_gif`).innerHTML="";
                 document.getElementById(`pokemon_${position}_gif`).style.grid_row_start="1";
@@ -264,18 +315,19 @@ function get_pokemon(number){
                 document.getElementById(`pokemon_${position}_stats`).innerHTML="";
                 document.getElementById(`pokemon_${position}_stats`).style.grid_row_start="2";
                 document.getElementById(`pokemon_${position}_stats`).appendChild(pokemon_stats)
-
-                document.getElementById(`pokemon_${position}_type_factors`).innerHTML="";
-                document.getElementById(`pokemon_${position}_type_factors`).style.grid_row_start="3";
-                document.getElementById(`pokemon_${position}_type_factors`).appendChild(display_type_factors)
+                
+                document.getElementById(`pokemon_${position}_times_4`).appendChild(times_4)
+                document.getElementById(`pokemon_${position}_times_2`).appendChild(times_2)
+                document.getElementById(`pokemon_${position}_times_1`).appendChild(times_1)
+                document.getElementById(`pokemon_${position}_times_half`).appendChild(times_half)
+                document.getElementById(`pokemon_${position}_times_quarter`).appendChild(times_quarter)
 
                 if (position<6){
                     position+=1
                 }
-            return true
             }
     ) 
-    )
+    
 }
 
 function analyze_team_stats(){
@@ -323,6 +375,14 @@ function analyze_team_stats(){
             }]
         },
         options: {
+            title: {
+                display: true,
+                text: 'Team Stats Averages',
+                fontSize:50
+            },
+            legend:{
+                display: false
+            },
             scales: {
                 yAxes: [{
                     ticks: {
@@ -497,8 +557,9 @@ function analyze_team_types(){
     var container = document.getElementById("type_chart");
     container.innerHTML="";
     container.style.display="block";
+    container.height=500;
     var type_chart = new Chart(container, {
-        type: 'horizontalBar',
+        type: 'bar',
         data: {
             labels: ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"],
             datasets: [
@@ -849,11 +910,22 @@ function analyze_team_types(){
         ]
         },
         options: {
-            // barThickness: 1000,
+            title: {
+                display: true,
+                text: 'Team Type Strengths and Weaknesses',
+                fontSize:50
+            },
             scales: {
                 yAxes: [{
-                    ticks: {
-                        beginAtZero:true
+                    girdLines: {
+                        display: false,
+                        color: "rgba(255, 0, 0, 1)"
+                    }
+                }],
+                xAxes: [{
+                    girdLines: {
+                        display: false,
+                        color: "rgba(255, 0, 0, 1)"
                     }
                 }]
             },
