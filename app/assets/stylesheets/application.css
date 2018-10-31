@@ -30,13 +30,13 @@
  .pokemon_times_4{
      grid-row-start:3;
      align-self: start;
-     border-top: 2px solid black;
+     /* border-top: 2px solid black; */
  }
 
  .pokemon_times_2{
     grid-row-start:4;
     align-self: start;
-    border-top: 2px solid black;
+    /* border-top: 2px solid black; */
 }
 
 .pokemon_times_1{
@@ -49,13 +49,13 @@
 .pokemon_times_half{
     grid-row-start:6;
     align-self: start;
-    border-top: 2px solid black;
+    /* border-top: 2px solid black; */
 }
 
 .pokemon_times_quarter{
     grid-row-start:7;
     align-self:start;
-    border-top: 2px solid black;
+    /* border-top: 2px solid black; */
     
 }
 

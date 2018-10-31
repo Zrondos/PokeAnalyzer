@@ -250,6 +250,12 @@ function get_pokemon(number){
                 // display_type_factors=document.createElement("div")
                 // display_type_factors.setAttribute("id",'type_factors')
 
+                document.getElementById(`pokemon_${position}_times_4`).innerHTML=""
+                document.getElementById(`pokemon_${position}_times_2`).innerHTML=""
+                document.getElementById(`pokemon_${position}_times_1`).innerHTML=""
+                document.getElementById(`pokemon_${position}_times_half`).innerHTML=""
+                document.getElementById(`pokemon_${position}_times_quarter`).innerHTML=""
+
                 var type_factors=type_weakness(pokemon.type)
 
                 times_4=document.createElement("div")
@@ -322,6 +328,11 @@ function get_pokemon(number){
                 document.getElementById(`pokemon_${position}_times_half`).appendChild(times_half)
                 document.getElementById(`pokemon_${position}_times_quarter`).appendChild(times_quarter)
 
+                document.getElementById(`pokemon_${position}_times_4`).style.borderTop="2px solid black"
+                document.getElementById(`pokemon_${position}_times_2`).style.borderTop="2px solid black"
+                document.getElementById(`pokemon_${position}_times_half`).style.borderTop="2px solid black"
+                document.getElementById(`pokemon_${position}_times_quarter`).style.borderTop="2px solid black"
+                
                 if (position<6){
                     position+=1
                 }
