@@ -1,4 +1,4 @@
-<button onclick="func()">Test</button>
+<button onclick="team_type_analysis()">Test</button>
 <h2>My Pokemon Team</h2>
 <button onclick="randomize()">Random Team</button>
 
@@ -6,58 +6,61 @@
 <button onclick="get_pokemon(document.getElementById('search').value)">Add</button>
 
 
-<%= form_for :team, url: "teams/create", remote: true do |form| %>
-  <%= text_field :team, :pokemon_1 %>
-  <%= text_field :team, :pokemon_2 %>
-  <%= text_field :team, :pokemon_3 %>
-  <%= text_field :team, :pokemon_4 %>
-  <%= text_field :team, :pokemon_5 %>
-  <%= text_field :team, :pokemon_6 %>
-  <%= form.submit  %>
-<% end  %>
-<button onclick="analyze( 
-          document.getElementById('team_pokemon_1').value, 
-          document.getElementById('team_pokemon_2').value,
-          document.getElementById('team_pokemon_3').value,
-          document.getElementById('team_pokemon_4').value,
-          document.getElementById('team_pokemon_5').value,
-          document.getElementById('team_pokemon_6').value
-          )">
-Analyze</button>
+
+<button onclick="analyze()">Analyze</button>
 
 <div class="team_container">
-  <div class="pokemon_container" id="pokemon_1">
-    <!--<img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/charizard.gif">
-    <%= image_tag 'delete.png', class: 'delete_button'%> -->
-    
+  <div class="pokemon_gif" id="pokemon_1_gif">
   </div>
-  <div class="pokemon_container" id="pokemon_2">
-    <!-- <img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/abomasnow.gif">-->
-    <div id="pokemon_2_stats">
-    </div>
+  <div class="pokemon_stats" id="pokemon_1_stats">
   </div>
-  <div class="pokemon_container" id="pokemon_3">
-    <!-- <img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/wailord.gif">-->
-    <div id="pokemon_3_stats">
-    </div>
+  <div class="pokemon_type_factors" id="pokemon_1_type_factors">
   </div>
-  <div class="pokemon_container" id="pokemon_4">
-    <!--<img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/rayquaza.gif">-->
-    <div id="pokemon_4_stats">
-    </div>
+  
+  <div class="pokemon_gif" id="pokemon_2_gif">
   </div>
-  <div class="pokemon_container" id="pokemon_5">
-    <!--<img class="pokemon_gif" src="https://www.smogon.com/dex/media/sprites/xy/bulbasaur.gif">-->
-    <div id="pokemon_5_stats">
-    </div>
+  <div class="pokemon_stats" id="pokemon_2_stats">
   </div>
-  <div class="pokemon_container" id="pokemon_6">
-    <div id="pokemon_6_stats">
-    </div>
-    
+  <div class="pokemon_type_factors" id="pokemon_2_type_factors">
   </div>
-</div>
 
-<div id="team_analysis">
+  <div class="pokemon_gif" id="pokemon_3_gif">
+  </div>
+  <div class="pokemon_stats" id="pokemon_3_stats">
+  </div>
+  <div class="pokemon_type_factors" id="pokemon_3_type_factors">
+  </div>
+
+  <div class="pokemon_gif" id="pokemon_4_gif">
+  </div>
+  <div class="pokemon_stats" id="pokemon_4_stats">
+  </div>
+  <div class="pokemon_type_factors" id="pokemon_4_type_factors">
+  </div>
+
+  <div class="pokemon_gif" id="pokemon_5_gif">
+  </div>
+  <div class="pokemon_stats" id="pokemon_5_stats">
+  </div>
+  <div class="pokemon_type_factors" id="pokemon_5_type_factors">
+  </div>
+
+  <div class="pokemon_gif" id="pokemon_6_gif">
+  </div>
+  <div class="pokemon_stats" id="pokemon_6_stats">
+  </div>
+  <div class="pokemon_type_factors" id="pokemon_6_type_factors">
+  </div>
   
 </div>
+
+<div class="stats_chart">
+<canvas id="stats_chart" width="1000" height="1000"></canvas>
+</div>
+
+<div class="type_chart_container">
+<canvas id="type_chart" width="1000" height="1000"></canvas>
+</div>
+
+
+

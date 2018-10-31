@@ -1,4 +1,4 @@
-require 'smogon'
+
 
 class MainController < ApplicationController
     

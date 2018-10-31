@@ -1,4 +1,4 @@
-require 'smogon'
+
 
 class PokemonsController < ApplicationController
     # def new

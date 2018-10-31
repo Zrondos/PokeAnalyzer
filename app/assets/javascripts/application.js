@@ -14,6 +14,9 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+//= require Chart.min
+var pokemon_team_hash={};
+
 class Pokemon{
     constructor(data,position){
         this.name=data.name
@@ -35,12 +38,12 @@ class Pokemon{
         for (var i=0; i<type_length; i++){
             type_array.push(data.types[i].type.name)
         }
-        this.type=[type_array]
+        this.type=type_array
         this.type_factors=type_weakness(type_array)
-        }
-
         
+        }
 }
+
 
 var type_effectiveness_hash={
     normal: {
@@ -152,10 +155,9 @@ var type_effectiveness_hash={
         immunity: ["dragon"]
     }
 }
-
 /////////////////////////////////////
 function type_weakness(type_array){
-    //type_effectiveness_array=[[weakness],[resistance],[immunity]]
+
     type_factors={
         normal: 1,
         fire: 1,
@@ -179,6 +181,7 @@ function type_weakness(type_array){
     
     for (var i=0; i<type_array.length; i++){
         current_type=type_array[i]
+       
         for (var j=0; j<type_effectiveness_hash[current_type].weakness.length; j++){
             type_factors[type_effectiveness_hash[current_type].weakness[j]]*=2
         }
@@ -191,22 +194,19 @@ function type_weakness(type_array){
 
     }
 
-    var display_type_factors=document.createElement("div")
-    display_type_factors.setAttribute("class",`type_factors`)
-    Object.keys(type_factors).forEach(function (key) { 
-        var list_item=document.createElement("p")
-        list_item.innerHTML=`${key}: ${type_factors[key]}`
-        display_type_factors.appendChild(list_item)
-    })
-    document.getElementById("team_analysis").appendChild(display_type_factors)
-    display_type_factors=""
+    // var display_type_factors=document.createElement("div")
+    // display_type_factors.setAttribute("class",`type_factors`)
+    // Object.keys(type_factors).forEach(function (key) { 
+    //     var list_item=document.createElement("p")
+    //     list_item.innerHTML=`${key}: ${type_factors[key]}`
+    //     display_type_factors.appendChild(list_item)
+    // })
     
+    
+    
+    return type_factors
     
 }
-
-
-
-
 
 function randomize(){
     number=Math.floor((Math.random() * 721) + 1);
@@ -231,6 +231,8 @@ function randomize(){
 .then(function (responses) {
     for (i=1; i<=6; i++){
         pokemon= new Pokemon(responses[i-1].data,i)
+        pokemon_team_hash[i]=pokemon
+
         var gif = document.createElement("img");
         gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);
         gif.setAttribute("class","pokemon_gif");
@@ -259,13 +261,29 @@ function randomize(){
         pokemon_stats.appendChild(special_attack)
         pokemon_stats.appendChild(special_defense)
         pokemon_stats.appendChild(speed)
+
+        display_type_factors=document.createElement("div")
+        display_type_factors.setAttribute("class",`type_factors`)
+        var type_factors=type_weakness(pokemon.type)
+        console.log(type_factors)
+        Object.keys(type_factors).forEach(function (key) { 
+            var list_item=document.createElement("p")
+            list_item.innerHTML=`${key}: ${type_factors[key]}`
+            display_type_factors.appendChild(list_item)
+        })
         
-        document.getElementById(`pokemon_${i}`).innerHTML=""
-        document.getElementById(`pokemon_${i}`).appendChild(gif)
-        document.getElementById(`pokemon_${i}`).appendChild(pokemon_stats)
-                
+        document.getElementById(`pokemon_${i}_gif`).innerHTML="";
+        document.getElementById(`pokemon_${i}_gif`).style.grid_row_start="1";
+        document.getElementById(`pokemon_${i}_gif`).appendChild(gif)
+
+        document.getElementById(`pokemon_${i}_stats`).innerHTML="";
+        document.getElementById(`pokemon_${i}_stats`).style.grid_row_start="2";
+        document.getElementById(`pokemon_${i}_stats`).appendChild(pokemon_stats)
+
+        document.getElementById(`pokemon_${i}_type_factors`).innerHTML="";
+        document.getElementById(`pokemon_${i}_type_factors`).style.grid_row_start="3";
+        document.getElementById(`pokemon_${i}_type_factors`).appendChild(display_type_factors)
         
-        document.getElementById(`team_pokemon_${i}`).value=JSON.stringify(pokemon)
 
     }  
 }
@@ -313,8 +331,6 @@ function get_pokemon(number){
                 document.getElementById(`pokemon_${position}`).appendChild(gif)
                 document.getElementById(`pokemon_${position}`).appendChild(pokemon_stats)
                         
-                
-                document.getElementById(`team_pokemon_${position}`).value=JSON.stringify(pokemon)
 
                 
                 if (position<6){
@@ -325,13 +341,13 @@ function get_pokemon(number){
 }
 
 
-function analyze(pokemon_1,pokemon_2,pokemon_3,pokemon_4,pokemon_5,pokemon_6){
-    pokemon_1=JSON.parse(pokemon_1);
-    pokemon_2=JSON.parse(pokemon_2);
-    pokemon_3=JSON.parse(pokemon_3);
-    pokemon_4=JSON.parse(pokemon_4);
-    pokemon_5=JSON.parse(pokemon_5);
-    pokemon_6=JSON.parse(pokemon_6);
+function analyze(){
+    pokemon_1=pokemon_team_hash[1];
+    pokemon_2=pokemon_team_hash[2];
+    pokemon_3=pokemon_team_hash[3];
+    pokemon_4=pokemon_team_hash[4];
+    pokemon_5=pokemon_team_hash[5];
+    pokemon_6=pokemon_team_hash[6];
 
     attack_average=(pokemon_1["attack"]+pokemon_2["attack"]+pokemon_3["attack"]+pokemon_4["attack"]+pokemon_5["attack"]+pokemon_6["attack"])/6;
     defense_average=(pokemon_1["defense"]+pokemon_2["defense"]+pokemon_3["defense"]+pokemon_4["defense"]+pokemon_5["defense"]+pokemon_6["defense"])/6;
@@ -340,21 +356,539 @@ function analyze(pokemon_1,pokemon_2,pokemon_3,pokemon_4,pokemon_5,pokemon_6){
     speed_average=(pokemon_1["speed"]+pokemon_2["speed"]+pokemon_3["speed"]+pokemon_4["speed"]+pokemon_5["speed"]+pokemon_6["speed"])/6;
     hp_average=(pokemon_1["hp"]+pokemon_2["hp"]+pokemon_3["hp"]+pokemon_4["hp"]+pokemon_5["hp"]+pokemon_6["hp"])/6;
 
-    
-
     attack_total=(attack_average*6)+(special_attack_average*6)
     defense_total=(defense_average*6)+(special_defense_average*6)
     attack_defense_total=attack_total+defense_total
     attack_fraction=attack_total/attack_defense_total
 
+
+
+    var ctx = document.getElementById("stats_chart");
+    ctx.innerHTML="";
+    ctx.style.display="block";
+    var stats_chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["Attack", "Defense", "Special Attack", "Special Defense", "HP", "Speed"],
+        datasets: [{
+            label: 'Stats Averages',
+            data: [attack_average, defense_average, special_attack_average, special_defense_average, speed_average, hp_average],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        },
+        maintainAspectRatio: false
+    }
+});
+    stats_chart.canvas.parentNode.style.height = '500px';
+    stats_chart.canvas.parentNode.style.width = '100%';
+
+
 }
 
-function func(){
-    axios.get('https://www.smogon.com/stats/2014-11/chaos/uu-1760.json').then(
-        function (response){
-            console.log(response)
+function team_type_analysis(){
+    team_factors={
+        normal:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        fire:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        water:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        grass:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        electric:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        ice:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        fighting:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        poison:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        ground:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        flying:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        psychic:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        bug:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        rock:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        ghost:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        dragon:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        dark:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        steel:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
+        },
+        fairy:{
+            very_resistant:0,
+            resistant:0,
+            weak:0,
+            very_weak:0,
+            immune: 0
         }
-    )
+    }
+
+    pokemon_1=pokemon_team_hash[1];
+    pokemon_2=pokemon_team_hash[2];
+    pokemon_3=pokemon_team_hash[3];
+    pokemon_4=pokemon_team_hash[4];
+    pokemon_5=pokemon_team_hash[5];
+    pokemon_6=pokemon_team_hash[6];
+
+    
+    for (var pokemon in pokemon_team_hash){
+        for (var type in team_factors){
+            if (pokemon_team_hash[pokemon].type_factors[type]==2){
+                team_factors[type]["weak"]+=1
+            }
+            if (pokemon_team_hash[pokemon].type_factors[type]==4){
+                team_factors[type]["very_weak"]+=1
+            }
+            if (pokemon_team_hash[pokemon].type_factors[type]==.5){
+                team_factors[type]["resistant"]+=1
+            }
+            if (pokemon_team_hash[pokemon].type_factors[type]==.25){
+                team_factors[type]["very_resistant"]+=1
+            }
+            if (pokemon_team_hash[pokemon].type_factors[type]==0){
+                team_factors[type]["immune"]+=1
+            }
+            
+        }
+    }
+    
+    var container = document.getElementById("type_chart");
+    container.innerHTML="";
+    container.style.display="block";
+    var type_chart = new Chart(container, {
+    type: 'horizontalBar',
+    data: {
+        labels: ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"],
+        datasets: [
+            
+            {
+            label: 'Resistant',
+            data: [
+                team_factors["normal"]["resistant"],
+                team_factors["fighting"]["resistant"],
+                team_factors["flying"]["resistant"],
+                team_factors["poison"]["resistant"],
+                team_factors["ground"]["resistant"],
+                team_factors["rock"]["resistant"],
+                team_factors["bug"]["resistant"],
+                team_factors["ghost"]["resistant"],
+                team_factors["steel"]["resistant"],
+                team_factors["fire"]["resistant"],
+                team_factors["water"]["resistant"],
+                team_factors["grass"]["resistant"],
+                team_factors["electric"]["resistant"],
+                team_factors["psychic"]["resistant"],
+                team_factors["ice"]["resistant"],
+                team_factors["dragon"]["resistant"],
+                team_factors["dark"]["resistant"],
+                team_factors["fairy"]["resistant"],
+        ],
+
+
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)'
+
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)'
+
+            ],
+            borderWidth: 1
+        },
+        {
+            
+            label: 'Weak',
+            data: [
+                team_factors["normal"]["weak"],
+                team_factors["fighting"]["weak"],
+                team_factors["flying"]["weak"],
+                team_factors["poison"]["weak"],
+                team_factors["ground"]["weak"],
+                team_factors["rock"]["weak"],
+                team_factors["bug"]["weak"],
+                team_factors["ghost"]["weak"],
+                team_factors["steel"]["weak"],
+                team_factors["fire"]["weak"],
+                team_factors["water"]["weak"],
+                team_factors["grass"]["weak"],
+                team_factors["electric"]["weak"],
+                team_factors["psychic"]["weak"],
+                team_factors["ice"]["weak"],
+                team_factors["dragon"]["weak"],
+                team_factors["dark"]["weak"],
+                team_factors["fairy"]["weak"],
+        ],
+
+
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)'
+
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)'
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Very Resistant',
+            data: [
+                team_factors["normal"]["very_resistant"],
+                team_factors["fighting"]["very_resistant"],
+                team_factors["flying"]["very_resistant"],
+                team_factors["poison"]["very_resistant"],
+                team_factors["ground"]["very_resistant"],
+                team_factors["rock"]["very_resistant"],
+                team_factors["bug"]["very_resistant"],
+                team_factors["ghost"]["very_resistant"],
+                team_factors["steel"]["very_resistant"],
+                team_factors["fire"]["very_resistant"],
+                team_factors["water"]["very_resistant"],
+                team_factors["grass"]["very_resistant"],
+                team_factors["electric"]["very_resistant"],
+                team_factors["psychic"]["very_resistant"],
+                team_factors["ice"]["very_resistant"],
+                team_factors["dragon"]["very_resistant"],
+                team_factors["dark"]["very_resistant"],
+                team_factors["fairy"]["very_resistant"]
+        
+        ],
+
+
+            backgroundColor: [
+
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)'
+
+            ],
+            borderColor: [
+
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)'
+
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Very weak',
+            data: [
+                team_factors["normal"]["very_weak"],
+                team_factors["fighting"]["very_weak"],
+                team_factors["flying"]["very_weak"],
+                team_factors["poison"]["very_weak"],
+                team_factors["ground"]["very_weak"],
+                team_factors["rock"]["very_weak"],
+                team_factors["bug"]["very_weak"],
+                team_factors["ghost"]["very_weak"],
+                team_factors["steel"]["very_weak"],
+                team_factors["fire"]["very_weak"],
+                team_factors["water"]["very_weak"],
+                team_factors["grass"]["very_weak"],
+                team_factors["electric"]["very_weak"],
+                team_factors["psychic"]["very_weak"],
+                team_factors["ice"]["very_weak"],
+                team_factors["dragon"]["very_weak"],
+                team_factors["dark"]["very_weak"],
+                team_factors["fairy"]["very_weak"]
+        
+        ],
+
+
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1 
+        },
+        {
+            label: 'Immune',
+            data: [
+                team_factors["normal"]["immune"],
+                team_factors["fighting"]["immune"],
+                team_factors["flying"]["immune"],
+                team_factors["poison"]["immune"],
+                team_factors["ground"]["immune"],
+                team_factors["rock"]["immune"],
+                team_factors["bug"]["immune"],
+                team_factors["ghost"]["immune"],
+                team_factors["steel"]["immune"],
+                team_factors["fire"]["immune"],
+                team_factors["water"]["immune"],
+                team_factors["grass"]["immune"],
+                team_factors["electric"]["immune"],
+                team_factors["psychic"]["immune"],
+                team_factors["ice"]["immune"],
+                team_factors["dragon"]["immune"],
+                team_factors["dark"]["immune"],
+                team_factors["fairy"]["immune"]
+        
+        ],
+
+
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1 
+        }
+
+    ]
+    },
+    options: {
+        // barThickness: 1000,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        },
+        maintainAspectRatio: false
+    }
+});
 
 }
+
+
+
+
 
