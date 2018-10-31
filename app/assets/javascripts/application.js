@@ -44,7 +44,6 @@ class Pokemon{
         }
 }
 
-
 var type_effectiveness_hash={
     normal: {
         type: "normal",
@@ -191,102 +190,39 @@ function type_weakness(type_array){
         for (var j=0; j<type_effectiveness_hash[current_type].immunity.length; j++){
             type_factors[type_effectiveness_hash[current_type].immunity[j]]*=0
         }
-
     }
-
     return type_factors 
 }
 
 function randomize(){
-    number=Math.floor((Math.random() * 721) + 1);
-    pokemonCall1= axios.get(`https://fizal.me/pokeapi/api/${number}.json`)
-
-    number=Math.floor((Math.random() * 700) + 1);
-    pokemonCall2= axios.get(`https://fizal.me/pokeapi/api/${number}.json`)
-
-    number=Math.floor((Math.random() * 700) + 1);
-    pokemonCall3= axios.get(`https://fizal.me/pokeapi/api/${number}.json`)
-
-    number=Math.floor((Math.random() * 700) + 1);
-    pokemonCall4= axios.get(`https://fizal.me/pokeapi/api/${number}.json`)
-
-    number=Math.floor((Math.random() * 700) + 1);
-    pokemonCall5= axios.get(`https://fizal.me/pokeapi/api/${number}.json`)
-
-    number=Math.floor((Math.random() * 700) + 1);
-    pokemonCall6= axios.get(`https://fizal.me/pokeapi/api/${number}.json`)
-    
-    axios.all([pokemonCall1, pokemonCall2, pokemonCall3, pokemonCall4, pokemonCall5, pokemonCall6])
-        .then(
-            function (responses) {
-                for (i=1; i<=6; i++){
-                    pokemon= new Pokemon(responses[i-1].data,i)
-                    pokemon_team_hash[i]=pokemon
-
-                    var gif = document.createElement("img");
-                    gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);
-                    gif.setAttribute("class","pokemon_gif");
-
-                    var name=document.createElement("p")
-                    var hp=document.createElement("p")
-                    var attack=document.createElement("p")
-                    var defense=document.createElement("p")
-                    var special_attack=document.createElement("p")
-                    var special_defense=document.createElement("p")
-                    var speed=document.createElement("p")
-                    name.innerHTML=pokemon["name"].toUpperCase()
-                    hp.innerHTML=`Hp:${pokemon["hp"]}`
-                    attack.innerHTML=`Attack:${pokemon["attack"]}`
-                    defense.innerHTML=`Defense:${pokemon["defense"]}`
-                    special_attack.innerHTML=`Special Attack: ${pokemon["special_attack"]}`
-                    special_defense.innerHTML=`Special Defense: ${pokemon["special_defense"]}`
-                    speed.innerHTML=`Speed: ${pokemon["speed"]}`
-
-                    pokemon_stats = document.createElement('div');
-                    pokemon_stats.setAttribute("id", "pokemon_stats");
-                    pokemon_stats.appendChild(name)
-                    pokemon_stats.appendChild(hp)
-                    pokemon_stats.appendChild(attack)
-                    pokemon_stats.appendChild(defense)
-                    pokemon_stats.appendChild(special_attack)
-                    pokemon_stats.appendChild(special_defense)
-                    pokemon_stats.appendChild(speed)
-
-                    display_type_factors=document.createElement("div")
-                    display_type_factors.setAttribute("class",`type_factors`)
-                    var type_factors=type_weakness(pokemon.type)
-                    Object.keys(type_factors).forEach(function (key) { 
-                        var list_item=document.createElement("p")
-                        list_item.innerHTML=`${key}: ${type_factors[key]}`
-                        display_type_factors.appendChild(list_item)
-                    })
-                    
-                    document.getElementById(`pokemon_${i}_gif`).innerHTML="";
-                    document.getElementById(`pokemon_${i}_gif`).style.grid_row_start="1";
-                    document.getElementById(`pokemon_${i}_gif`).appendChild(gif)
-
-                    document.getElementById(`pokemon_${i}_stats`).innerHTML="";
-                    document.getElementById(`pokemon_${i}_stats`).style.grid_row_start="2";
-                    document.getElementById(`pokemon_${i}_stats`).appendChild(pokemon_stats)
-
-                    document.getElementById(`pokemon_${i}_type_factors`).innerHTML="";
-                    document.getElementById(`pokemon_${i}_type_factors`).style.grid_row_start="3";
-                    document.getElementById(`pokemon_${i}_type_factors`).appendChild(display_type_factors)
-                }  
-            }
-        )
+    for (var i=0; i<6; i++){
+        
+        number=Math.floor((Math.random() * 721) + 1);
+        passed=get_pokemon(number)
+        console.log(passed)
+        if (!passed){
+            i-=1;
+            continue
+        }
+    }
+    position=1
 }
 
 position=1
 function get_pokemon(number){
+    return (
     axios.get(`https://fizal.me/pokeapi/api/${number}.json`).then(
-        function (response)
-            {   pokemon= new Pokemon(response.data)
+        function (responses) {
+                pokemon= new Pokemon(responses.data,position)
+                // if (pokemon["attack"]<50){
+                //     return false
+                // }
+                pokemon_team_hash[position]=pokemon
 
                 var gif = document.createElement("img");
                 gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);
                 gif.setAttribute("class","pokemon_gif");
-        
+
                 var name=document.createElement("p")
                 var hp=document.createElement("p")
                 var attack=document.createElement("p")
@@ -294,8 +230,7 @@ function get_pokemon(number){
                 var special_attack=document.createElement("p")
                 var special_defense=document.createElement("p")
                 var speed=document.createElement("p")
-                
-                name.innerHTML=`Name: ${pokemon["name"]}`
+                name.innerHTML=pokemon["name"].toUpperCase()
                 hp.innerHTML=`Hp:${pokemon["hp"]}`
                 attack.innerHTML=`Attack:${pokemon["attack"]}`
                 defense.innerHTML=`Defense:${pokemon["defense"]}`
@@ -303,7 +238,6 @@ function get_pokemon(number){
                 special_defense.innerHTML=`Special Defense: ${pokemon["special_defense"]}`
                 speed.innerHTML=`Speed: ${pokemon["speed"]}`
 
-        
                 pokemon_stats = document.createElement('div');
                 pokemon_stats.setAttribute("id", "pokemon_stats");
                 pokemon_stats.appendChild(name)
@@ -313,19 +247,38 @@ function get_pokemon(number){
                 pokemon_stats.appendChild(special_attack)
                 pokemon_stats.appendChild(special_defense)
                 pokemon_stats.appendChild(speed)
+
+                display_type_factors=document.createElement("div")
+                display_type_factors.setAttribute("class",`type_factors`)
+                var type_factors=type_weakness(pokemon.type)
+                Object.keys(type_factors).forEach(function (key) { 
+                    var list_item=document.createElement("p")
+                    list_item.innerHTML=`${key}: ${type_factors[key]}`
+                    display_type_factors.appendChild(list_item)
+                })
                 
-                document.getElementById(`pokemon_${position}`).innerHTML=""
-                document.getElementById(`pokemon_${position}`).appendChild(gif)
-                document.getElementById(`pokemon_${position}`).appendChild(pokemon_stats)      
-                
+                document.getElementById(`pokemon_${position}_gif`).innerHTML="";
+                document.getElementById(`pokemon_${position}_gif`).style.grid_row_start="1";
+                document.getElementById(`pokemon_${position}_gif`).appendChild(gif)
+
+                document.getElementById(`pokemon_${position}_stats`).innerHTML="";
+                document.getElementById(`pokemon_${position}_stats`).style.grid_row_start="2";
+                document.getElementById(`pokemon_${position}_stats`).appendChild(pokemon_stats)
+
+                document.getElementById(`pokemon_${position}_type_factors`).innerHTML="";
+                document.getElementById(`pokemon_${position}_type_factors`).style.grid_row_start="3";
+                document.getElementById(`pokemon_${position}_type_factors`).appendChild(display_type_factors)
+
                 if (position<6){
                     position+=1
                 }
+            return true
             }
+    ) 
     )
 }
 
-function analyze(){
+function analyze_team_stats(){
     pokemon_1=pokemon_team_hash[1];
     pokemon_2=pokemon_team_hash[2];
     pokemon_3=pokemon_team_hash[3];
@@ -384,7 +337,7 @@ function analyze(){
     stats_chart.canvas.parentNode.style.width = '100%';
 }
 
-function team_type_analysis(){
+function analyze_team_types(){
     team_factors={
         normal:{
             very_resistant:0,
@@ -520,7 +473,6 @@ function team_type_analysis(){
     pokemon_4=pokemon_team_hash[4];
     pokemon_5=pokemon_team_hash[5];
     pokemon_6=pokemon_team_hash[6];
-
     
     for (var pokemon in pokemon_team_hash){
         for (var type in team_factors){
@@ -910,7 +862,7 @@ function team_type_analysis(){
     });
 }
 
-
-
-
-
+function analyze(){
+    analyze_team_stats();
+    analyze_team_types();
+}
