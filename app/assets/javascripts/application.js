@@ -194,18 +194,7 @@ function type_weakness(type_array){
 
     }
 
-    // var display_type_factors=document.createElement("div")
-    // display_type_factors.setAttribute("class",`type_factors`)
-    // Object.keys(type_factors).forEach(function (key) { 
-    //     var list_item=document.createElement("p")
-    //     list_item.innerHTML=`${key}: ${type_factors[key]}`
-    //     display_type_factors.appendChild(list_item)
-    // })
-    
-    
-    
-    return type_factors
-    
+    return type_factors 
 }
 
 function randomize(){
@@ -228,66 +217,64 @@ function randomize(){
     pokemonCall6= axios.get(`https://fizal.me/pokeapi/api/${number}.json`)
     
     axios.all([pokemonCall1, pokemonCall2, pokemonCall3, pokemonCall4, pokemonCall5, pokemonCall6])
-.then(function (responses) {
-    for (i=1; i<=6; i++){
-        pokemon= new Pokemon(responses[i-1].data,i)
-        pokemon_team_hash[i]=pokemon
+        .then(
+            function (responses) {
+                for (i=1; i<=6; i++){
+                    pokemon= new Pokemon(responses[i-1].data,i)
+                    pokemon_team_hash[i]=pokemon
 
-        var gif = document.createElement("img");
-        gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);
-        gif.setAttribute("class","pokemon_gif");
+                    var gif = document.createElement("img");
+                    gif.setAttribute("src", `https://www.smogon.com/dex/media/sprites/xy/${pokemon["name"]}.gif`);
+                    gif.setAttribute("class","pokemon_gif");
 
-        var name=document.createElement("p")
-        var hp=document.createElement("p")
-        var attack=document.createElement("p")
-        var defense=document.createElement("p")
-        var special_attack=document.createElement("p")
-        var special_defense=document.createElement("p")
-        var speed=document.createElement("p")
-        name.innerHTML=pokemon["name"].toUpperCase()
-        hp.innerHTML=`Hp:${pokemon["hp"]}`
-        attack.innerHTML=`Attack:${pokemon["attack"]}`
-        defense.innerHTML=`Defense:${pokemon["defense"]}`
-        special_attack.innerHTML=`Special Attack: ${pokemon["special_attack"]}`
-        special_defense.innerHTML=`Special Defense: ${pokemon["special_defense"]}`
-        speed.innerHTML=`Speed: ${pokemon["speed"]}`
+                    var name=document.createElement("p")
+                    var hp=document.createElement("p")
+                    var attack=document.createElement("p")
+                    var defense=document.createElement("p")
+                    var special_attack=document.createElement("p")
+                    var special_defense=document.createElement("p")
+                    var speed=document.createElement("p")
+                    name.innerHTML=pokemon["name"].toUpperCase()
+                    hp.innerHTML=`Hp:${pokemon["hp"]}`
+                    attack.innerHTML=`Attack:${pokemon["attack"]}`
+                    defense.innerHTML=`Defense:${pokemon["defense"]}`
+                    special_attack.innerHTML=`Special Attack: ${pokemon["special_attack"]}`
+                    special_defense.innerHTML=`Special Defense: ${pokemon["special_defense"]}`
+                    speed.innerHTML=`Speed: ${pokemon["speed"]}`
 
-        pokemon_stats = document.createElement('div');
-        pokemon_stats.setAttribute("id", "pokemon_stats");
-        pokemon_stats.appendChild(name)
-        pokemon_stats.appendChild(hp)
-        pokemon_stats.appendChild(attack)
-        pokemon_stats.appendChild(defense)
-        pokemon_stats.appendChild(special_attack)
-        pokemon_stats.appendChild(special_defense)
-        pokemon_stats.appendChild(speed)
+                    pokemon_stats = document.createElement('div');
+                    pokemon_stats.setAttribute("id", "pokemon_stats");
+                    pokemon_stats.appendChild(name)
+                    pokemon_stats.appendChild(hp)
+                    pokemon_stats.appendChild(attack)
+                    pokemon_stats.appendChild(defense)
+                    pokemon_stats.appendChild(special_attack)
+                    pokemon_stats.appendChild(special_defense)
+                    pokemon_stats.appendChild(speed)
 
-        display_type_factors=document.createElement("div")
-        display_type_factors.setAttribute("class",`type_factors`)
-        var type_factors=type_weakness(pokemon.type)
-        console.log(type_factors)
-        Object.keys(type_factors).forEach(function (key) { 
-            var list_item=document.createElement("p")
-            list_item.innerHTML=`${key}: ${type_factors[key]}`
-            display_type_factors.appendChild(list_item)
-        })
-        
-        document.getElementById(`pokemon_${i}_gif`).innerHTML="";
-        document.getElementById(`pokemon_${i}_gif`).style.grid_row_start="1";
-        document.getElementById(`pokemon_${i}_gif`).appendChild(gif)
+                    display_type_factors=document.createElement("div")
+                    display_type_factors.setAttribute("class",`type_factors`)
+                    var type_factors=type_weakness(pokemon.type)
+                    Object.keys(type_factors).forEach(function (key) { 
+                        var list_item=document.createElement("p")
+                        list_item.innerHTML=`${key}: ${type_factors[key]}`
+                        display_type_factors.appendChild(list_item)
+                    })
+                    
+                    document.getElementById(`pokemon_${i}_gif`).innerHTML="";
+                    document.getElementById(`pokemon_${i}_gif`).style.grid_row_start="1";
+                    document.getElementById(`pokemon_${i}_gif`).appendChild(gif)
 
-        document.getElementById(`pokemon_${i}_stats`).innerHTML="";
-        document.getElementById(`pokemon_${i}_stats`).style.grid_row_start="2";
-        document.getElementById(`pokemon_${i}_stats`).appendChild(pokemon_stats)
+                    document.getElementById(`pokemon_${i}_stats`).innerHTML="";
+                    document.getElementById(`pokemon_${i}_stats`).style.grid_row_start="2";
+                    document.getElementById(`pokemon_${i}_stats`).appendChild(pokemon_stats)
 
-        document.getElementById(`pokemon_${i}_type_factors`).innerHTML="";
-        document.getElementById(`pokemon_${i}_type_factors`).style.grid_row_start="3";
-        document.getElementById(`pokemon_${i}_type_factors`).appendChild(display_type_factors)
-        
-
-    }  
-}
-)
+                    document.getElementById(`pokemon_${i}_type_factors`).innerHTML="";
+                    document.getElementById(`pokemon_${i}_type_factors`).style.grid_row_start="3";
+                    document.getElementById(`pokemon_${i}_type_factors`).appendChild(display_type_factors)
+                }  
+            }
+        )
 }
 
 position=1
@@ -329,9 +316,7 @@ function get_pokemon(number){
                 
                 document.getElementById(`pokemon_${position}`).innerHTML=""
                 document.getElementById(`pokemon_${position}`).appendChild(gif)
-                document.getElementById(`pokemon_${position}`).appendChild(pokemon_stats)
-                        
-
+                document.getElementById(`pokemon_${position}`).appendChild(pokemon_stats)      
                 
                 if (position<6){
                     position+=1
@@ -339,7 +324,6 @@ function get_pokemon(number){
             }
     )
 }
-
 
 function analyze(){
     pokemon_1=pokemon_team_hash[1];
@@ -356,57 +340,48 @@ function analyze(){
     speed_average=(pokemon_1["speed"]+pokemon_2["speed"]+pokemon_3["speed"]+pokemon_4["speed"]+pokemon_5["speed"]+pokemon_6["speed"])/6;
     hp_average=(pokemon_1["hp"]+pokemon_2["hp"]+pokemon_3["hp"]+pokemon_4["hp"]+pokemon_5["hp"]+pokemon_6["hp"])/6;
 
-    attack_total=(attack_average*6)+(special_attack_average*6)
-    defense_total=(defense_average*6)+(special_defense_average*6)
-    attack_defense_total=attack_total+defense_total
-    attack_fraction=attack_total/attack_defense_total
-
-
-
     var ctx = document.getElementById("stats_chart");
     ctx.innerHTML="";
     ctx.style.display="block";
     var stats_chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["Attack", "Defense", "Special Attack", "Special Defense", "HP", "Speed"],
-        datasets: [{
-            label: 'Stats Averages',
-            data: [attack_average, defense_average, special_attack_average, special_defense_average, speed_average, hp_average],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
+        type: 'bar',
+        data: {
+            labels: ["Attack", "Defense", "Special Attack", "Special Defense", "HP", "Speed"],
+            datasets: [{
+                label: 'Stats Averages',
+                data: [attack_average, defense_average, special_attack_average, special_defense_average, speed_average, hp_average],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
             }]
         },
-        maintainAspectRatio: false
-    }
-});
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
+            maintainAspectRatio: false
+        }
+    });
     stats_chart.canvas.parentNode.style.height = '500px';
     stats_chart.canvas.parentNode.style.width = '100%';
-
-
 }
 
 function team_type_analysis(){
@@ -564,7 +539,6 @@ function team_type_analysis(){
             if (pokemon_team_hash[pokemon].type_factors[type]==0){
                 team_factors[type]["immune"]+=1
             }
-            
         }
     }
     
@@ -572,369 +546,368 @@ function team_type_analysis(){
     container.innerHTML="";
     container.style.display="block";
     var type_chart = new Chart(container, {
-    type: 'horizontalBar',
-    data: {
-        labels: ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"],
-        datasets: [
-            
+        type: 'horizontalBar',
+        data: {
+            labels: ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"],
+            datasets: [
+                
+                {
+                label: 'Resistant',
+                data: [
+                    team_factors["normal"]["resistant"],
+                    team_factors["fighting"]["resistant"],
+                    team_factors["flying"]["resistant"],
+                    team_factors["poison"]["resistant"],
+                    team_factors["ground"]["resistant"],
+                    team_factors["rock"]["resistant"],
+                    team_factors["bug"]["resistant"],
+                    team_factors["ghost"]["resistant"],
+                    team_factors["steel"]["resistant"],
+                    team_factors["fire"]["resistant"],
+                    team_factors["water"]["resistant"],
+                    team_factors["grass"]["resistant"],
+                    team_factors["electric"]["resistant"],
+                    team_factors["psychic"]["resistant"],
+                    team_factors["ice"]["resistant"],
+                    team_factors["dragon"]["resistant"],
+                    team_factors["dark"]["resistant"],
+                    team_factors["fairy"]["resistant"],
+            ],
+
+
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+
+                ],
+                borderWidth: 1
+            },
             {
-            label: 'Resistant',
-            data: [
-                team_factors["normal"]["resistant"],
-                team_factors["fighting"]["resistant"],
-                team_factors["flying"]["resistant"],
-                team_factors["poison"]["resistant"],
-                team_factors["ground"]["resistant"],
-                team_factors["rock"]["resistant"],
-                team_factors["bug"]["resistant"],
-                team_factors["ghost"]["resistant"],
-                team_factors["steel"]["resistant"],
-                team_factors["fire"]["resistant"],
-                team_factors["water"]["resistant"],
-                team_factors["grass"]["resistant"],
-                team_factors["electric"]["resistant"],
-                team_factors["psychic"]["resistant"],
-                team_factors["ice"]["resistant"],
-                team_factors["dragon"]["resistant"],
-                team_factors["dark"]["resistant"],
-                team_factors["fairy"]["resistant"],
-        ],
-
-
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)'
-
+                
+                label: 'Weak',
+                data: [
+                    team_factors["normal"]["weak"],
+                    team_factors["fighting"]["weak"],
+                    team_factors["flying"]["weak"],
+                    team_factors["poison"]["weak"],
+                    team_factors["ground"]["weak"],
+                    team_factors["rock"]["weak"],
+                    team_factors["bug"]["weak"],
+                    team_factors["ghost"]["weak"],
+                    team_factors["steel"]["weak"],
+                    team_factors["fire"]["weak"],
+                    team_factors["water"]["weak"],
+                    team_factors["grass"]["weak"],
+                    team_factors["electric"]["weak"],
+                    team_factors["psychic"]["weak"],
+                    team_factors["ice"]["weak"],
+                    team_factors["dragon"]["weak"],
+                    team_factors["dark"]["weak"],
+                    team_factors["fairy"]["weak"],
             ],
-            borderColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)'
 
-            ],
-            borderWidth: 1
-        },
-        {
+
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Very Resistant',
+                data: [
+                    team_factors["normal"]["very_resistant"],
+                    team_factors["fighting"]["very_resistant"],
+                    team_factors["flying"]["very_resistant"],
+                    team_factors["poison"]["very_resistant"],
+                    team_factors["ground"]["very_resistant"],
+                    team_factors["rock"]["very_resistant"],
+                    team_factors["bug"]["very_resistant"],
+                    team_factors["ghost"]["very_resistant"],
+                    team_factors["steel"]["very_resistant"],
+                    team_factors["fire"]["very_resistant"],
+                    team_factors["water"]["very_resistant"],
+                    team_factors["grass"]["very_resistant"],
+                    team_factors["electric"]["very_resistant"],
+                    team_factors["psychic"]["very_resistant"],
+                    team_factors["ice"]["very_resistant"],
+                    team_factors["dragon"]["very_resistant"],
+                    team_factors["dark"]["very_resistant"],
+                    team_factors["fairy"]["very_resistant"]
             
-            label: 'Weak',
-            data: [
-                team_factors["normal"]["weak"],
-                team_factors["fighting"]["weak"],
-                team_factors["flying"]["weak"],
-                team_factors["poison"]["weak"],
-                team_factors["ground"]["weak"],
-                team_factors["rock"]["weak"],
-                team_factors["bug"]["weak"],
-                team_factors["ghost"]["weak"],
-                team_factors["steel"]["weak"],
-                team_factors["fire"]["weak"],
-                team_factors["water"]["weak"],
-                team_factors["grass"]["weak"],
-                team_factors["electric"]["weak"],
-                team_factors["psychic"]["weak"],
-                team_factors["ice"]["weak"],
-                team_factors["dragon"]["weak"],
-                team_factors["dark"]["weak"],
-                team_factors["fairy"]["weak"],
-        ],
-
-
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)'
-
             ],
-            borderColor: [
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)'
+
+
+                backgroundColor: [
+
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+
+                ],
+                borderColor: [
+
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 206, 86, 1)'
+
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Very weak',
+                data: [
+                    team_factors["normal"]["very_weak"],
+                    team_factors["fighting"]["very_weak"],
+                    team_factors["flying"]["very_weak"],
+                    team_factors["poison"]["very_weak"],
+                    team_factors["ground"]["very_weak"],
+                    team_factors["rock"]["very_weak"],
+                    team_factors["bug"]["very_weak"],
+                    team_factors["ghost"]["very_weak"],
+                    team_factors["steel"]["very_weak"],
+                    team_factors["fire"]["very_weak"],
+                    team_factors["water"]["very_weak"],
+                    team_factors["grass"]["very_weak"],
+                    team_factors["electric"]["very_weak"],
+                    team_factors["psychic"]["very_weak"],
+                    team_factors["ice"]["very_weak"],
+                    team_factors["dragon"]["very_weak"],
+                    team_factors["dark"]["very_weak"],
+                    team_factors["fairy"]["very_weak"]
+            
             ],
-            borderWidth: 1
+
+
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderWidth: 1 
+            },
+            {
+                label: 'Immune',
+                data: [
+                    team_factors["normal"]["immune"],
+                    team_factors["fighting"]["immune"],
+                    team_factors["flying"]["immune"],
+                    team_factors["poison"]["immune"],
+                    team_factors["ground"]["immune"],
+                    team_factors["rock"]["immune"],
+                    team_factors["bug"]["immune"],
+                    team_factors["ghost"]["immune"],
+                    team_factors["steel"]["immune"],
+                    team_factors["fire"]["immune"],
+                    team_factors["water"]["immune"],
+                    team_factors["grass"]["immune"],
+                    team_factors["electric"]["immune"],
+                    team_factors["psychic"]["immune"],
+                    team_factors["ice"]["immune"],
+                    team_factors["dragon"]["immune"],
+                    team_factors["dark"]["immune"],
+                    team_factors["fairy"]["immune"]
+            
+            ],
+
+
+                backgroundColor: [
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderWidth: 1 
+            }
+
+        ]
         },
-        {
-            label: 'Very Resistant',
-            data: [
-                team_factors["normal"]["very_resistant"],
-                team_factors["fighting"]["very_resistant"],
-                team_factors["flying"]["very_resistant"],
-                team_factors["poison"]["very_resistant"],
-                team_factors["ground"]["very_resistant"],
-                team_factors["rock"]["very_resistant"],
-                team_factors["bug"]["very_resistant"],
-                team_factors["ghost"]["very_resistant"],
-                team_factors["steel"]["very_resistant"],
-                team_factors["fire"]["very_resistant"],
-                team_factors["water"]["very_resistant"],
-                team_factors["grass"]["very_resistant"],
-                team_factors["electric"]["very_resistant"],
-                team_factors["psychic"]["very_resistant"],
-                team_factors["ice"]["very_resistant"],
-                team_factors["dragon"]["very_resistant"],
-                team_factors["dark"]["very_resistant"],
-                team_factors["fairy"]["very_resistant"]
-        
-        ],
-
-
-            backgroundColor: [
-
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)'
-
-            ],
-            borderColor: [
-
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)'
-
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'Very weak',
-            data: [
-                team_factors["normal"]["very_weak"],
-                team_factors["fighting"]["very_weak"],
-                team_factors["flying"]["very_weak"],
-                team_factors["poison"]["very_weak"],
-                team_factors["ground"]["very_weak"],
-                team_factors["rock"]["very_weak"],
-                team_factors["bug"]["very_weak"],
-                team_factors["ghost"]["very_weak"],
-                team_factors["steel"]["very_weak"],
-                team_factors["fire"]["very_weak"],
-                team_factors["water"]["very_weak"],
-                team_factors["grass"]["very_weak"],
-                team_factors["electric"]["very_weak"],
-                team_factors["psychic"]["very_weak"],
-                team_factors["ice"]["very_weak"],
-                team_factors["dragon"]["very_weak"],
-                team_factors["dark"]["very_weak"],
-                team_factors["fairy"]["very_weak"]
-        
-        ],
-
-
-            backgroundColor: [
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)'
-
-            ],
-            borderColor: [
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(75, 192, 192, 0.2)'
-            ],
-            borderWidth: 1 
-        },
-        {
-            label: 'Immune',
-            data: [
-                team_factors["normal"]["immune"],
-                team_factors["fighting"]["immune"],
-                team_factors["flying"]["immune"],
-                team_factors["poison"]["immune"],
-                team_factors["ground"]["immune"],
-                team_factors["rock"]["immune"],
-                team_factors["bug"]["immune"],
-                team_factors["ghost"]["immune"],
-                team_factors["steel"]["immune"],
-                team_factors["fire"]["immune"],
-                team_factors["water"]["immune"],
-                team_factors["grass"]["immune"],
-                team_factors["electric"]["immune"],
-                team_factors["psychic"]["immune"],
-                team_factors["ice"]["immune"],
-                team_factors["dragon"]["immune"],
-                team_factors["dark"]["immune"],
-                team_factors["fairy"]["immune"]
-        
-        ],
-
-
-            backgroundColor: [
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderColor: [
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderWidth: 1 
+        options: {
+            // barThickness: 1000,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
+            maintainAspectRatio: false
         }
-
-    ]
-    },
-    options: {
-        // barThickness: 1000,
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        },
-        maintainAspectRatio: false
-    }
-});
-
+    });
 }
 
 
