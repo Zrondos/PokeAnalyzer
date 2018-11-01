@@ -1,13 +1,19 @@
 
-<h2>My Pokemon Team</h2>
-<button onclick="randomize()">Random Team</button>
+<h2 class="title">PokeAnalyzer</h2>
+<div class="buttons">
+  <div class="random_team">
+    <button onclick="randomize()">Generate Random Team</button>
+  </div>
+  <div class="add_pokemon">
+    <%= text_field_tag(:search) %>
+    <br>
+    <button onclick="get_pokemon(document.getElementById('search').value)" class="add_button">Add Pokemon</button>
+  </div>
+</div>
+<div class="analyze_button_container">
+    <button onclick="analyze()" class="analyze_button">Analyze</button>
+</div>
 
-<%= text_field_tag(:search) %>
-<button onclick="get_pokemon(document.getElementById('search').value)">Add</button>
-
-
-
-<button onclick="analyze()">Analyze</button>
 
 <div class="team_container">
   <div class="pokemon_gif" id="pokemon_1_gif">

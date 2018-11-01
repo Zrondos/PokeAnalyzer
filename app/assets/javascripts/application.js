@@ -48,109 +48,127 @@ var type_effectiveness_hash={
         type: "normal",
         weakness: ["fighting"],
         resistance: [],
-        immunity: ["ghost"]
+        immunity: ["ghost"],
+        color: "#C7C2BA"
     },
     fire:{
         type: "fire",
         weakness: ["water", "ground", "rock"],
         resistance: ["fire", "grass", "ice", "bug", "steel", "fairy"],
-        immunity: []
+        immunity: [],
+        color: "#E73C0C"
     },
     water:{
         type: "water",
         weakness: ["grass", "electric"],
         resistance: ["fire", "water", "ice", "steel"],
-        immunity: []
+        immunity: [],
+        color: "#3092F3"
     },
     grass:{
         type: "grass",
         weakness: ["fire", "ice", "poison", "flying", "bug"],
         resistance: ["water", "grass", "electric", "ground"],
-        immunity: []
+        immunity: [],
+        color: "#75C437"
     },
     electric:{
         type: "electric",
         weakness: ["ground"],
         resistance: ["electric","flying", "steel"],
-        immunity: []
+        immunity: [],
+        color: "#F9B716"
     },
     ice:{
         type: "ice",
         weakness: ["fire", "fighting", "rock", "steel"],
         resistance: ["ice"],
-        immunity: []
+        immunity: [],
+        color: "#A3E7FD"
     },
     fighting:{
         type: "fighting",
         weakness: ["flying","psychic","fairy"],
         resistance: ["bug","rock","dark"],
-        immunity: []
+        immunity: [],
+        color: "#80341D"
     },
     poison:{
         type: "poison",
         weakness: ["ground","psychic"],
         resistance: ["grass","fighting","poison","bug","fairy"],
-        immunity: []
+        immunity: [],
+        color: "#934695"
     },
     ground:{
         type: "ground",
         weakness: ["water","grass","ice"],
         resistance: ["poison","rock"],
-        immunity: ["electric"]
+        immunity: ["electric"],
+        color: "#D3B257"
     },
     flying:{
         type: "flying",
         weakness: ["electric","ice","rock"],
         resistance: ["grass","fighting","bug"],
-        immunity: ["ground"]
+        immunity: ["ground"],
+        color: "#93A5F2"
     },
     psychic:{
         type: "psychic",
         weakness: ["bug","ghost","dark"],
         resistance: ["fighting","psychic"],
-        immunity: []
+        immunity: [],
+        color: "#EA457E"
     },
     bug:{
         type: "bug",
         weakness: ["fire","flying","rock"],
         resistance: ["grass","fighting","ground"],
-        immunity: []
+        immunity: [],
+        color: "#A5B41D"
     },
     rock:{
         type: "rock",
         weakness: ["water","grass","fighting","ground","steel"],
         resistance: ["normal","fire","poison","flying"],
-        immunity: []
+        immunity: [],
+        color: "#B9A156"
     },
     ghost:{
         type: "ghost",
         weakness: ["ghost","dark"],
         resistance: ["poison","bug"],
-        immunity: ["normal","fighting"]
+        immunity: ["normal","fighting"],
+        color: "#6161B2"
     },
     dragon:{
         type: "dragon",
         weakness: ["ice","dragon","fairy"],
         resistance: ["fire","water","grass","electric"],
-        immunity: []
+        immunity: [],
+        color: "#755DDD"
     },
     dark:{
         type: "dark",
         weakness: ["fighting","bug","fairy"],
         resistance: ["ghost","dark"],
-        immunity: ["psychic"]
+        immunity: ["psychic"],
+        color: "#4F3B2E"
     },
     steel:{
         type: "steel",
         weakness: ["fire","fighting","ground"],
         resistance: ["normal","grass","ice","flying","psychic","bug","rock","dragon","steel","fairy"],
-        immunity: ["poison"]
+        immunity: ["poison"],
+        color: "#B3B3C1"
     },
     fairy:{
         type: "fairy",
         weakness: ["poison","steel"],
         resistance: ["fighting","bug","dark"],
-        immunity: ["dragon"]
+        immunity: ["dragon"],
+        color: "#F5B1F5"
     }
 }
 /////////////////////////////////////
@@ -216,6 +234,7 @@ function get_pokemon(number){
         function (responses) {
                 pokemon= new Pokemon(responses.data,position)
 
+
                 pokemon_team_hash[position]=pokemon
 
                 var gif = document.createElement("img");
@@ -229,17 +248,28 @@ function get_pokemon(number){
                 var special_attack=document.createElement("p")
                 var special_defense=document.createElement("p")
                 var speed=document.createElement("p")
-                name.innerHTML=pokemon["name"].toUpperCase()
-                hp.innerHTML=`Hp:${pokemon["hp"]}`
-                attack.innerHTML=`Attack:${pokemon["attack"]}`
-                defense.innerHTML=`Defense:${pokemon["defense"]}`
-                special_attack.innerHTML=`Special Attack: ${pokemon["special_attack"]}`
-                special_defense.innerHTML=`Special Defense: ${pokemon["special_defense"]}`
-                speed.innerHTML=`Speed: ${pokemon["speed"]}`
 
                 pokemon_stats = document.createElement('div');
                 pokemon_stats.setAttribute("id", "pokemon_stats");
+                name.innerHTML=`${pokemon.name.toUpperCase()}`
                 pokemon_stats.appendChild(name)
+
+                for (var i=0; i<pokemon.type.length; i++){
+                    type=document.createElement("img")
+                    type.setAttribute("src",`/${pokemon.type[i].toUpperCase()}.png`)
+                    type.setAttribute("class","type_image")
+                    pokemon_stats.appendChild(type)
+                }
+                
+                
+                attack.innerHTML=`ATTACK: ${pokemon["attack"]}`
+                defense.innerHTML=`DEFENSE: ${pokemon["defense"]}`
+                special_attack.innerHTML=`SPECIAL ATTACK: ${pokemon["special_attack"]}`
+                special_defense.innerHTML=`SPECIAL DEFENSE: ${pokemon["special_defense"]}`
+                speed.innerHTML=`SPEED: ${pokemon["speed"]}`
+
+                
+                
                 pokemon_stats.appendChild(hp)
                 pokemon_stats.appendChild(attack)
                 pokemon_stats.appendChild(defense)
@@ -288,18 +318,21 @@ function get_pokemon(number){
                 var number_of_quarters=0;
                 Object.keys(type_factors).forEach(function (key) { 
                     var list_item=document.createElement("span")
+                    var pic_item=document.createElement("img")
+                    pic_item.setAttribute("class","type_image")
+                    
                     if (type_factors[key]==4){
                         number_of_4s+=1
-                        times_4.appendChild(list_item)
-                        list_item.innerHTML=key
+                        pic_item.setAttribute("src", `/${key.toUpperCase()}.png`)
+                        times_4.appendChild(pic_item)
                         if (number_of_4s%2==0){
                             times_4.innerHTML+="<br>"
                         }
                     }
                     else if (type_factors[key]==2){
                         number_of_2s+=1
-                        times_2.appendChild(list_item)
-                        list_item.innerHTML=key
+                        pic_item.setAttribute("src", `/${key.toUpperCase()}.png`)
+                        times_2.appendChild(pic_item)
                         if (number_of_2s%2==0){
                             times_2.innerHTML+="<br>"
                         }
@@ -310,16 +343,16 @@ function get_pokemon(number){
                     }
                     else if (type_factors[key]==.5){
                         number_of_halves+=1
-                        times_half.appendChild(list_item)
-                        list_item.innerHTML=key
+                        pic_item.setAttribute("src", `/${key.toUpperCase()}.png`)
+                        times_half.appendChild(pic_item)
                         if (number_of_halves%2==0){
                             times_half.innerHTML+="<br>"
                         }
                     }
                     else if (type_factors[key]==.25){
                         number_of_quarters+=1
-                        times_quarter.appendChild(list_item)
-                        list_item.innerHTML=key
+                        pic_item.setAttribute("src", `/${key.toUpperCase()}.png`)
+                        times_quarter.appendChild(pic_item)
                         if (number_of_quarters%2==0){
                             times_quarter.innerHTML+="<br>"
                         }
@@ -330,6 +363,8 @@ function get_pokemon(number){
                 document.getElementById(`pokemon_${position}_gif`).innerHTML="";
                 document.getElementById(`pokemon_${position}_gif`).style.grid_row_start="1";
                 document.getElementById(`pokemon_${position}_gif`).appendChild(gif)
+                // document.getElementById(`pokemon_${position}_gif`).style.backgroundColor=type_effectiveness_hash[(pokemon.type[0])]["color"]
+                
 
                 document.getElementById(`pokemon_${position}_stats`).innerHTML="";
                 document.getElementById(`pokemon_${position}_stats`).style.grid_row_start="2";
@@ -345,6 +380,7 @@ function get_pokemon(number){
                 document.getElementById(`pokemon_${position}_times_2`).style.borderTop="2px solid black"
                 document.getElementById(`pokemon_${position}_times_half`).style.borderTop="2px solid black"
                 document.getElementById(`pokemon_${position}_times_quarter`).style.borderTop="2px solid black"
+                
                 
                 if (position<6){
                     position+=1
@@ -613,24 +649,25 @@ function analyze_team_types(){
 
 
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)'
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)',
+                    'rgba(147, 52, 243, 0.3)'
+                    
 
                 ],
                 borderColor: [
@@ -682,24 +719,24 @@ function analyze_team_types(){
 
 
                 backgroundColor: [
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(54, 162, 235, 0.2)'
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)',
+                    'rgba(244, 115, 10, 0.3)'
 
                 ],
                 borderColor: [
@@ -751,46 +788,47 @@ function analyze_team_types(){
 
                 backgroundColor: [
 
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(255, 206, 86, 0.2)'
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)',
+                    'rgba(81, 13, 149, 0.6)'
 
                 ],
                 borderColor: [
 
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(255, 206, 86, 1)'
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)',
+                    // 'rgba(81, 9, 153, 1)'
+                    
 
                 ],
                 borderWidth: 1
@@ -821,25 +859,24 @@ function analyze_team_types(){
 
 
                 backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(75, 192, 192, 0.2)'
-
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)',
+                    'rgba(244, 64, 10, 0.3)'
                 ],
                 borderColor: [
                     'rgba(75, 192, 192, 0.2)',
@@ -889,24 +926,26 @@ function analyze_team_types(){
 
 
                 backgroundColor: [
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)',
+                    'rgba(16, 213, 65, 0.3)'
+                    
+                    
                 ],
                 borderColor: [
                     'rgba(153, 102, 255, 0.2)',
