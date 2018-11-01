@@ -247,8 +247,7 @@ function get_pokemon(number){
                 pokemon_stats.appendChild(special_defense)
                 pokemon_stats.appendChild(speed)
 
-                // display_type_factors=document.createElement("div")
-                // display_type_factors.setAttribute("id",'type_factors')
+
 
                 document.getElementById(`pokemon_${position}_times_4`).innerHTML=""
                 document.getElementById(`pokemon_${position}_times_2`).innerHTML=""
@@ -277,42 +276,56 @@ function get_pokemon(number){
                 title=document.createElement("p")
                 title.innerHTML="0.5x Damange"
                 times_half.appendChild(title)
-                
 
                 times_quarter=document.createElement("div")
                 title=document.createElement("p")
                 title.innerHTML="0.25x Damange"
                 times_quarter.appendChild(title)
 
-
+                var number_of_4s=0;
+                var number_of_2s=0;
+                var number_of_halves=0;
+                var number_of_quarters=0;
                 Object.keys(type_factors).forEach(function (key) { 
                     var list_item=document.createElement("span")
                     if (type_factors[key]==4){
+                        number_of_4s+=1
                         times_4.appendChild(list_item)
+                        list_item.innerHTML=key
+                        if (number_of_4s%2==0){
+                            times_4.innerHTML+="<br>"
+                        }
                     }
                     else if (type_factors[key]==2){
+                        number_of_2s+=1
                         times_2.appendChild(list_item)
-                        list_item.innerHTML=`${key}`
+                        list_item.innerHTML=key
+                        if (number_of_2s%2==0){
+                            times_2.innerHTML+="<br>"
+                        }
                     }
                     else if (type_factors[key]==1){
                         times_1.appendChild(list_item)
                         list_item.innerHTML=key
                     }
                     else if (type_factors[key]==.5){
+                        number_of_halves+=1
                         times_half.appendChild(list_item)
                         list_item.innerHTML=key
+                        if (number_of_halves%2==0){
+                            times_half.innerHTML+="<br>"
+                        }
                     }
                     else if (type_factors[key]==.25){
+                        number_of_quarters+=1
                         times_quarter.appendChild(list_item)
                         list_item.innerHTML=key
+                        if (number_of_quarters%2==0){
+                            times_quarter.innerHTML+="<br>"
+                        }
                     }                    
                 })
-                
-                // display_type_factors.appendChild(times_4)
-                // display_type_factors.appendChild(times_2)
-                // display_type_factors.appendChild(times_1)
-                // display_type_factors.appendChild(times_half)
-                // display_type_factors.appendChild(times_quarter)
+
                 
                 document.getElementById(`pokemon_${position}_gif`).innerHTML="";
                 document.getElementById(`pokemon_${position}_gif`).style.grid_row_start="1";
