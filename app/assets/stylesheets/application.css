@@ -14,10 +14,20 @@
  *= require_self
  */
 
+ body{
+     background-color: #CFCFCF;
+ }
  .title{
      text-align: center;
  }
 
+ .nav_image{
+    width: 100%;
+    height: 570px;
+    position: absolute;
+    z-index: -1;
+    bottom: 233px;
+ }
  .buttons{
      display: flex;
      justify-content: space-evenly;
@@ -63,40 +73,45 @@
  .team_container{
     display: grid;
     grid-template-columns: repeat(6,auto);
-    grid-template-rows: repeat(9,auto);
-    grid-template-rows: auto auto;
+    grid-template-rows: repeat(10,auto);
+    /* grid-template-rows: auto auto; */
     align-items: end;
     padding-left:10px;
+    margin-top: 15px;
+ }
+
+ .pokemon{
+     grid-row-start:1;
  }
 
  .pokemon_stats{
-     grid-row-start:2;
+     grid-row-start:3;
  }
 
  .pokemon_times_4{
-     grid-row-start:3;
+     grid-row-start:4;
      align-self: start;
  }
 
  .pokemon_times_2{
-    grid-row-start:4;
+    grid-row-start:5;
     align-self: start;
 }
 
 .pokemon_times_1{
-    grid-row-start:5;
+    grid-row-start:6;
     align-self: start;
     display:none;
     
 }
 
 .pokemon_times_half{
-    grid-row-start:6;
+    grid-row-start:7;
     align-self: start;
 }
 
 .pokemon_times_quarter{
-    grid-row-start:7;
+    grid-row-start:8;
     align-self:start;
 }
 

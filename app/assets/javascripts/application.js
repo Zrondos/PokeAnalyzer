@@ -360,14 +360,16 @@ function get_pokemon(number){
                 })
 
                 
+                // document.getElementById(`pokemon_${position}`).style.grid_row_start="1";
+                // document.getElementById(`pokemon_${position}`).innerHTML="<p>Pokemon 1</p>"
+
                 document.getElementById(`pokemon_${position}_gif`).innerHTML="";
-                document.getElementById(`pokemon_${position}_gif`).style.grid_row_start="1";
+                document.getElementById(`pokemon_${position}_gif`).style.grid_row_start="2";
                 document.getElementById(`pokemon_${position}_gif`).appendChild(gif)
-                // document.getElementById(`pokemon_${position}_gif`).style.backgroundColor=type_effectiveness_hash[(pokemon.type[0])]["color"]
                 
 
                 document.getElementById(`pokemon_${position}_stats`).innerHTML="";
-                document.getElementById(`pokemon_${position}_stats`).style.grid_row_start="2";
+                document.getElementById(`pokemon_${position}_stats`).style.grid_row_start="3";
                 document.getElementById(`pokemon_${position}_stats`).appendChild(pokemon_stats)
                 
                 document.getElementById(`pokemon_${position}_times_4`).appendChild(times_4)
