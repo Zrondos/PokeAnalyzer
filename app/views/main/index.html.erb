@@ -1,19 +1,23 @@
-<nav>
-  <img src="assets/navbar.jpg" class="nav_image">
-</nav>
-<h2 class="title">PokeAnalyzer</h2>
-<div class="buttons">
-  <div class="random_team">
-    <button onclick="randomize()" class="generate_button">Generate Random Team</button>
+<div class="header">
+  <h1 class="title">PokeAnalyzer</h1>
+  <h2>Give your team a competitive edge</h2>
+  
+  <div class="buttons">
+    <h3>Search Pokemon by number</h3>
+    <div class="add_pokemon">
+      <%= text_field_tag(:search) %>
+      <button onclick="get_pokemon(document.getElementById('search').value)" class="add_button">Add Pokemon</button>
+    </div>
+    <h3>or</h3>
+    <div class="random_team">
+      <button onclick="randomize()" class="generate_button">Generate Random Team</button>
+    </div>
   </div>
-  <div class="add_pokemon">
-    <%= text_field_tag(:search) %>
-    <br>
-    <button onclick="get_pokemon(document.getElementById('search').value)" class="add_button">Add Pokemon</button>
+
+  <div class="analyze_button_container">
+      <h3>Run Analytics</h3>
+      <button onclick="analyze()" class="analyze_button">Analyze</button>
   </div>
-</div>
-<div class="analyze_button_container">
-    <button onclick="analyze()" class="analyze_button">Analyze</button>
 </div>
 
 
