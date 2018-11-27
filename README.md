@@ -14,6 +14,6 @@ Some things about the app
 [Vist application](https://pokemonanalyzer.herokuapp.com/)  
 
 
-![4](https://img.youtube.com/vi/Pz5_bVG5C9g/3.jpg)
+![4](https://img.youtube.com/vi/Pz5_bVG5C9g/3.jpg =100x20)
 
 
