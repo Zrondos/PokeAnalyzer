@@ -13,8 +13,8 @@ Some things about the app
 
 [Vist application](https://pokemonanalyzer.herokuapp.com/)  
 
+[![Click Through](https://img.youtube.com/vi/Pz5_bVG5C9g/0.jpg)](https://www.youtube.com/watch?v=Pz5_bVG5C9g)
 
-<img src="thumbnail.png" width="200"/>
 
 
 
