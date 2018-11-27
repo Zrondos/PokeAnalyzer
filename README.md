@@ -13,9 +13,9 @@ Some things about the app
 
 [Test it out!](https://pokemonanalyzer.herokuapp.com/)  
 
-Click Through  
+[Click Through]((https://www.youtube.com/watch?v=Pz5_bVG5C9g))
   
-  
+
 [![Click Through](https://img.youtube.com/vi/Pz5_bVG5C9g/0.jpg)](https://www.youtube.com/watch?v=Pz5_bVG5C9g)
 
 
