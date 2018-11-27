@@ -1,6 +1,10 @@
+<div class="background">
+  <%= image_tag 'pokeball', class:"background_image" %>
+</div>
 <div class="header">
+  <br>
   <h1 class="title">PokeAnalyzer</h1>
-  <h2>Give your team a competitive edge</h2>
+  <h2 class="tag_line">Give your team a competitive edge</h2>
   
   <div class="buttons">
     <h3>Search Pokemon by number</h3>
@@ -15,7 +19,6 @@
   </div>
 
   <div class="analyze_button_container">
-      <h3>Run Analytics</h3>
       <button onclick="analyze()" class="analyze_button">Analyze</button>
   </div>
 </div>
@@ -132,7 +135,7 @@
   
 </div>
 
-<div class="stats_chart">
+<div id="stats_chart_container">
 <canvas id="stats_chart" width="1000" height="1000"></canvas>
 </div>
 

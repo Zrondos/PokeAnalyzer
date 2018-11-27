@@ -13,45 +13,46 @@
  *= require_tree .
  *= require_self
  */
-
+html{
+    scroll-behavior: smooth;
+}
  body{
-     background-color: #CFCFCF;
+     /* background-color: #CFCFCF; */
+     overflow-x: hidden;
+     
+ }
+.background{
+    margin-top:-20px;
+}
+ .background_image{
+    width: 104%;
+    position: absolute;
+    z-index: -1;
+    height: 500px;
+    margin-left: -52px;
  }
  .title{
      text-align: center;
+     margin-top:10px;
+     margin-bottom: -15px;
  }
 
- /* .nav_image{
-    width: 100%;
-    height: 570px;
-    position: absolute;
-    z-index: -1;
-    bottom: 233px;
- } */
+ .tag_line{
+    margin-bottom: 6px;
+ }
 
  .header{
      text-align: center;
  }
 
- /*.buttons{
-     display: flex;
-     justify-content: space-evenly;
-
- } */
 
 .header h3{
      margin: 0px;
  }
- /* .random_team{
-     text-align: center;
-
- }
 
  .add_pokemon{
-    display: flex;
-    flex-direction: column;
- } */
-
+     margin-top: 5px;
+ }
  .add_button{
     border-radius: 10px;
     border: 1px solid black;
@@ -59,7 +60,7 @@
  }
 
  .analyze_button{
-    font-size: 15px;
+    font-size: 20px;
     border-radius: 10px;
     border: 1px solid black;
     margin-top: 10px;
@@ -72,14 +73,15 @@
  }
 
  .analyze_button_container{
-     margin-top:15px
+    margin-top: 42px;
+    margin-bottom: 51px;
  } 
 
  .team_container{
     display: grid;
     grid-template-columns: repeat(6,auto);
     grid-template-rows: repeat(10,auto);
-    /* grid-template-rows: auto auto; */
+    text-align: center;
     align-items: end;
     padding-left:10px;
     margin-top: 15px;
@@ -136,4 +138,14 @@
 
  #type_chart{
      display:none;
+ }
+
+ #test1{
+     border: 2px solid black;
+     height: 500px;
+ }
+
+ #test2{
+     border: 2px solid blue;
+     height: 500px;
  }

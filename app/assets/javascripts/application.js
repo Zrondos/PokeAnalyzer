@@ -383,6 +383,7 @@ function get_pokemon(number){
                 document.getElementById(`pokemon_${position}_times_half`).style.borderTop="2px solid black"
                 document.getElementById(`pokemon_${position}_times_quarter`).style.borderTop="2px solid black"
                 
+                document.getElementById('search').value=""
                 
                 if (position<6){
                     position+=1
@@ -985,7 +986,17 @@ function analyze_team_types(){
                     girdLines: {
                         display: false,
                         color: "rgba(255, 0, 0, 1)"
-                    }
+                    },
+                ticks: {
+                    beginAtZero: true,
+                    callback: function(value) {if (value % 1 === 0) {return value;}},
+                    max: 6
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Number of Pokemon',
+                    fontSize:20
+                }
                 }],
                 xAxes: [{
                     girdLines: {
@@ -997,9 +1008,12 @@ function analyze_team_types(){
             maintainAspectRatio: false
         }
     });
+    
 }
+
 
 function analyze(){
     analyze_team_stats();
     analyze_team_types();
+    setTimeout(function(){ document.getElementById("stats_chart_container").scrollIntoView(); }, 100);
 }
