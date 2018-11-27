@@ -11,9 +11,9 @@ Some things about the app
 * CSS Grid for full responsiveness
 * Utilize Chart.JS API to create interactive graphs regarding teams strengths and weaknesses
 
-[Vist application](https://pokemonanalyzer.herokuapp.com/)  
+[Test it out!](https://pokemonanalyzer.herokuapp.com/)  
 
-[![Click Through](https://img.youtube.com/vi/Pz5_bVG5C9g/0.jpg)](https://www.youtube.com/watch?v=Pz5_bVG5C9g)
+Click Through[![Click Through](https://img.youtube.com/vi/Pz5_bVG5C9g/0.jpg)](https://www.youtube.com/watch?v=Pz5_bVG5C9g)
 
 
 
