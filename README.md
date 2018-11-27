@@ -13,9 +13,7 @@ Some things about the app
 
 [Vist application](https://pokemonanalyzer.herokuapp.com/)  
 
-![1](https://img.youtube.com/vi/Pz5_bVG5C9g/0.jpg)
-![2](https://img.youtube.com/vi/Pz5_bVG5C9g/1.jpg)
-![3](https://img.youtube.com/vi/Pz5_bVG5C9g/2.jpg)
+
 ![4](https://img.youtube.com/vi/Pz5_bVG5C9g/3.jpg)
 
 
