@@ -6,8 +6,7 @@ Search for Pokemon by number or generate a random team then click "Analyze".
 
 Some things about the app  
 * Built on Ruby on Rails
-* Grabbing data of Pokemon stats and gifs from two API's
-* Promised base AJAX calls from two Pokemon API's
+* Promised base AJAX calls from two API's
 * CSS Grid for full responsiveness
 * Utilize Chart.JS API to create interactive graphs regarding teams strengths and weaknesses
 
